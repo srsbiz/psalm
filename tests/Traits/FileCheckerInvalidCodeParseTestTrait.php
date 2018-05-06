@@ -37,6 +37,11 @@ trait FileCheckerInvalidCodeParseTestTrait
         }
 
         $this->expectException('\Psalm\Exception\CodeException');
+
+        if (strpos($error_message, 'src/somefile.php') !== false && DIRECTORY_SEPARATOR !== '/') {
+            $error_message = str_replace('src/somefile.php', 'src' . DIRECTORY_SEPARATOR . 'somefile.php', $error_message);
+        }
+
         $this->expectExceptionMessageRegexp('/\b' . preg_quote($error_message, '/') . '\b/');
 
         $file_path = self::$src_dir_path . 'somefile.php';
